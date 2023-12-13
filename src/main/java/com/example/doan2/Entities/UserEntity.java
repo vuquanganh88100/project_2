@@ -24,6 +24,6 @@ public class UserEntity {
     private String userEmail;
     @Column(name = "user_password")
     private String userPassword;
-    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ConfirmTokenEntity> confirmTokenEntities = new ArrayList<>();
+    @OneToOne(mappedBy = "userEntity")
+    private  ConfirmTokenEntity confirmTokenEntity;
 }

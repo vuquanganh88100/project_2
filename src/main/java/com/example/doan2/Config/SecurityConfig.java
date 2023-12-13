@@ -25,21 +25,22 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-//                        .requestMatchers(adminRequestMatcher()).hasRole("admin")
-//                        .requestMatchers(userRequestMatcher()).hasAnyRole("admin","user")
+                        .requestMatchers(adminRequestMatcher()).hasRole("admin")
+                        .requestMatchers(userRequestMatcher()).hasAnyRole("admin","user")
                         .anyRequest().permitAll()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/study/home/login")
+                        .loginPage("/ielts/login")
                         .usernameParameter("userEmail")
-                        .passwordParameter("password")
+                        .passwordParameter("userPassword")
                         .loginProcessingUrl("/doLogin")
-                        .failureUrl("/study/home/login?error=true")
+                        .defaultSuccessUrl("/homepage.html", true)
+                        .failureUrl("/ielts/login?error=true")
                         .permitAll()
                 )
                 .logout((logout) ->
                         logout
-                                .logoutUrl("/study/home/logout")
+                                .logoutUrl("/ielts/logout")
                                 .logoutSuccessUrl("/study/home")
                                 .invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID")// key duy nhất xđ ng dùng tương tác vs hệ thống
@@ -64,7 +65,7 @@ public class SecurityConfig {
     @Bean
     public  RequestMatcher userRequestMatcher() {
 
-        return new RegexRequestMatcher("^/ielts/(?!signup|signup/save).*", null);
+        return new RegexRequestMatcher("^/ielts/(?!signup|signup/save|confirm-account).*", null);
     }
 
 }

@@ -22,7 +22,7 @@ public class UserService {
     @Autowired
     ConfirmTokenRepository confirmTokenRepository;
 
-    public String save(UserDto userDto, TokenDto tokenDto) throws MessagingException {
+    public String save(UserDto userDto) throws MessagingException {
         UserEntity userEntity =new UserEntity();
         userEntity.setUserEmail(userDto.getUserEmail());
         userEntity.setUserName(userDto.getUserName());
@@ -30,15 +30,23 @@ public class UserService {
         userEntity.setUserRole(userDto.getUserRole());
         userEntity.setUserEnable(false);
         userRepository.save(userEntity);
-        emailService.sendSimpleMail(userDto,tokenDto);
-        verify(tokenDto);
+        ConfirmTokenEntity confirmTokenEntity = new ConfirmTokenEntity(userEntity); // Initialize confirmDate and confirmToken in the constructor
+        confirmTokenRepository.save(confirmTokenEntity);
+        emailService.sendSimpleMail(userDto,confirmTokenEntity);
         return "Tao moi tai khoan thanh cong ";
     }
-    public void verify(TokenDto token){
-        ConfirmTokenEntity tokenEntity=confirmTokenRepository.findByConfirmToken(token.getConfirmToken());
-    if(tokenEntity!=null){
-        UserEntity userEntity=userRepository.findByUserEmailIgnoreCase(tokenEntity.getUserEntity().getUserEmail());
-        userEntity.setUserEnable(true);
+
+    public boolean verify(ConfirmTokenEntity token) {
+        ConfirmTokenEntity tokenEntity = confirmTokenRepository.findByConfirmToken(token.getConfirmToken());
+        if (tokenEntity != null) {
+            UserEntity userEntity = userRepository.findByUserEmailIgnoreCase(tokenEntity.getUserEntity().getUserEmail());
+            userEntity.setUserEnable(true);
+            userRepository.save(userEntity);
+            return true;
+        }else{
+            return false;
+        }
     }
-    }
+
+
 }

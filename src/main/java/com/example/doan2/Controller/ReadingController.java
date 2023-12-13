@@ -3,6 +3,7 @@ package com.example.doan2.Controller;
 import com.example.doan2.Dto.ReadingFileDto;
 import com.example.doan2.Entities.ReadingQuesEntity;
 import com.example.doan2.Service.ReadingQuesService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model; // Import the correct Model class
 import com.example.doan2.Dto.PassageDto;
@@ -25,10 +26,11 @@ public class ReadingController {
     PassageService passageService;
     @Autowired
     ReadingQuesService readingQuesService;
+
     @GetMapping("reading/upload")
     public String upload(Model model) {
         PassageEntity passage = new PassageEntity();
-        ReadingQuesEntity readingQues=new ReadingQuesEntity();
+        ReadingQuesEntity readingQues = new ReadingQuesEntity();
         // Set the ID for the PassageEntity (you should get a valid ID here)
         // passage.setId(your_id_here);
 
@@ -39,9 +41,9 @@ public class ReadingController {
     }
 
     @PostMapping(value = "reading/save")
-    public String save(PassageDto passageDto, PassageEntity passage, Model model,MultipartFile file) throws IOException {
+    public String save(PassageDto passageDto, PassageEntity passage, Model model, MultipartFile file) throws IOException {
         Integer id = passageService.saveAndReturnId(passageDto).getId();
-        model.addAttribute("file",file);
+        model.addAttribute("file", file);
         PassageEntity passageEntity = passageService.findById(id);
 
         // Pass the PassageEntity to the save method in ReadingQuesService
@@ -68,4 +70,5 @@ public class ReadingController {
 //            return " thanh cong";
 //        }
 
-}}
+    }
+}

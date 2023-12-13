@@ -19,8 +19,8 @@ public class ConfirmTokenEntity {
     @Column(name = "confirm_date")
     private Date confirmDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id",referencedColumnName = "user_id")
     private UserEntity userEntity;
     public ConfirmTokenEntity() {
     }
