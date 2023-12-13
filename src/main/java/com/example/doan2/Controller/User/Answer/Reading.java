@@ -1,6 +1,6 @@
 package com.example.doan2.Controller.User.Answer;
 
-import com.example.doan2.Dto.AnswerReadingDto;
+import com.example.doan2.Dto.Answer.AnswerReadingDto;
 import com.example.doan2.Repository.ReadingQuestionRepository;
 import com.example.doan2.Repository.UserRepository;
 import com.example.doan2.Service.AnswerService;
@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;

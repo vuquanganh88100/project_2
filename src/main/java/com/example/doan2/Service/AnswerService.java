@@ -1,6 +1,6 @@
 package com.example.doan2.Service;
 
-import com.example.doan2.Dto.AnswerReadingDto;
+import com.example.doan2.Dto.Answer.AnswerReadingDto;
 import com.example.doan2.Entities.AnswerReadingEntity;
 import com.example.doan2.Entities.PassageEntity;
 import com.example.doan2.Entities.UserEntity;
@@ -11,7 +11,6 @@ import com.example.doan2.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

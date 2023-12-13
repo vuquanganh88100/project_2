@@ -28,4 +28,10 @@ public class UserEntity {
     private  ConfirmTokenEntity confirmTokenEntity;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AnswerReadingEntity> answerReadingEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<WritingEntity> writingEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AnswerWritingEntity> answerWritingEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "marker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AnswerWritingEntity> answerWritingEntities1 = new ArrayList<>();
 }
