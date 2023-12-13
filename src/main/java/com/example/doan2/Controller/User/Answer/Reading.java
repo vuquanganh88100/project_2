@@ -1,6 +1,8 @@
 package com.example.doan2.Controller.User.Answer;
 
 import com.example.doan2.Dto.Answer.AnswerReadingDto;
+import com.example.doan2.Dto.PassageDto;
+import com.example.doan2.Entities.PassageEntity;
 import com.example.doan2.Repository.ReadingQuestionRepository;
 import com.example.doan2.Repository.UserRepository;
 import com.example.doan2.Service.AnswerService;
@@ -35,6 +37,10 @@ public class Reading {
             List<String> types = passageService.findTypeByPassage(id, passageNumber);
             String passage = passageService.passage(id, passageNumber);
             String[][] options=passageService.option(id,passageNumber);
+            //result
+            List<String> corrects=passageService.findCorrect(id,passageNumber);
+            model.addAttribute("corrects"+passageNumber,corrects);
+            //
             passage = passage.replace("\n", "<br>");
             List<Integer>nums=passageService.findNumber(id,passageNumber);
             model.addAttribute("options"+passageNumber,options);
@@ -55,6 +61,10 @@ public class Reading {
             List<String> types = (List<String>) model.getAttribute("types" + passageNumber);
             String output = passageService.generateOutputWithInputs(contents, types,nums,options,passageNumber);
             model.addAttribute("output" + passageNumber, output);
+            // getResult
+            List<String> corrects = (List<String>) model.getAttribute("corrects" + passageNumber);
+            String result=passageService.generatedResult(contents, types,nums,options,passageNumber,corrects);
+            model.addAttribute("result"+passageNumber,result);
         }
         model.addAttribute("userId",userId);
         model.addAttribute("examId",id);
@@ -100,7 +110,17 @@ answerReadingDto.setSelectedAns(selectedAnswers);
 
     return ResponseEntity.ok("Answers submitted successfully");
 }
+@GetMapping("/practice")
+    public  String getList(Model model){
+        List<PassageEntity> passageEntities=passageService.findAll();
+        model.addAttribute("testReading",passageEntities);
+        return "/jsp/user/answer/listReading.jsp";
 
+}
+@GetMapping("tips")
+    public String getTips(){
+        return"/jsp/admin/reading/tips.jsp";
+    }
 
 
 

@@ -34,14 +34,14 @@ public class SecurityConfig {
                         .usernameParameter("userEmail")
                         .passwordParameter("userPassword")
                         .loginProcessingUrl("/doLogin")
-                        .defaultSuccessUrl("/homepage.html", true)
+                        .defaultSuccessUrl("/ielts/home", true)
                         .failureUrl("/ielts/login?error=true")
                         .permitAll()
                 )
                 .logout((logout) ->
                         logout
                                 .logoutUrl("/ielts/logout")
-                                .logoutSuccessUrl("/study/home")
+                                .logoutSuccessUrl("/ielts/home")
                                 .invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID")// key duy nhất xđ ng dùng tương tác vs hệ thống
                                 .permitAll()

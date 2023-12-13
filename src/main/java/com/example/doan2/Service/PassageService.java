@@ -24,6 +24,7 @@ public class PassageService {
 
         return passageRepository.save(passage);
     }
+
     public PassageEntity findById(Integer id){
         Optional<PassageEntity> passageEntityOptional = passageRepository.findById(id);
         return passageEntityOptional.orElse(null);
@@ -128,6 +129,61 @@ public class PassageService {
 
         return output.toString();
     }
+    public String generatedResult(List<String> content, List<String> type, List<Integer> nums, String[][] option, int passageNumber,
+                                  List<String> correct) {
+        StringBuilder output = new StringBuilder();
+
+        int i = 0;
+        while (i < content.size()) {
+            String temp = type.get(i);
+            output.append("<h3>De bai: ").append(type.get(i)).append("</h3><br>");
+
+            int k;
+            for (k = i; k < type.size(); k++) {
+                if (!type.get(k).equals(temp)) {
+                    break;
+                }
+                output.append("Question: ").append(nums.get(k)).append(" ").append(content.get(k)).append("<br>");
+                if (!String.valueOf(option[k][0]).equals("null")) {
+                    output.append("<input type=\"hidden\" name=\"input_" + passageNumber + "_" + k + "_placeholder\" />"); // Add hidden field as a placeholder
+
+                    // Option A
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"A\"");
+                    if (correct.get(k).equals("A")) {
+                        output.append(" checked"); // Check if correct answer is A
+                    }
+                    output.append(" title=\"" + option[k][0] + "\" data-questionIndex=\"" + nums.get(k) + "\" disabled />Option A: " + option[k][0] + "<br>");
+
+                    // Option B
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"B\"");
+                    if (correct.get(k).equals("B")) {
+                        output.append(" checked"); // Check if correct answer is B
+                    }
+                    output.append(" title=\"" + option[k][1] + "\" data-questionIndex=\"" + nums.get(k) + "\" disabled />Option B: " + option[k][1] + "<br>");
+
+                    // Option C
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"C\"");
+                    if (correct.get(k).equals("C")) {
+                        output.append(" checked"); // Check if correct answer is C
+                    }
+                    output.append(" title=\"" + option[k][2] + "\" data-questionIndex=\"" + nums.get(k) + "\" disabled />Option C: " + option[k][2] + "<br>");
+
+                    // Option D
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"D\"");
+                    if (correct.get(k).equals("D")) {
+                        output.append(" checked"); // Check if correct answer is D
+                    }
+                    output.append(" title=\"" + option[k][3] + "\" data-questionIndex=\"" + nums.get(k) + "\" disabled />Option D: " + option[k][3] + "<br>");
+                } else {
+                    output.append("<input type=\"text\" name=\"input_" + passageNumber + "_" + k + "\" value=\"" + correct.get(k) + "\" data-questionIndex=\"" + nums.get(k) + "\" readonly /><br>");
+                }
+            }
+            i = k;
+        }
+        return output.toString();
+    }
+
+
 
 
 }

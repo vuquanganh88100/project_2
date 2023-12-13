@@ -34,4 +34,13 @@ public class UserEntity {
     private List<AnswerWritingEntity> answerWritingEntities = new ArrayList<>();
     @OneToMany(mappedBy = "marker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AnswerWritingEntity> answerWritingEntities1 = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SpeakingEntity> speakingEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AnswerSpeakingEntity> answerSpeakingEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "marker", cascade = {CascadeType.PERSIST, CascadeType.ALL}, fetch = FetchType.LAZY)
+    private List<AnswerSpeakingEntity> answerSpeakingEntities1 = new ArrayList<>();
+
+
 }

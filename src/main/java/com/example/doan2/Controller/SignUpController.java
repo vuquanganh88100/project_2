@@ -58,5 +58,4 @@ public class SignUpController {
     public String login(){
         return "/jsp/user/login.jsp";
     }
-
 }

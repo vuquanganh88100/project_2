@@ -19,10 +19,14 @@
     <div class="student" style="border-color: #17a2b8">
         <div class="upper-left">
             <div class="task">
-                <h2>Writing Task 1</h2>
+                <h2>The graph below shows the percentages of tourists who used different types of transport to travel within a particular nation between 1989 and 2009. Each tourist may have used more than one type of transport.
+
+                    Summarise the information by selecting and reporting the main features, and make comparisons where relevant.
+
+                    Write at least 150 words.</h2>
                 <!-- Content for Task 1 -->
-                <p>${w.part1}</p>
-                <img src="/images/${w.img}" alt="Image Description" width="724" height="485">
+                <p></p>
+                <img src="https://media.zim.vn/6593c6a790e552e3f7a22227/giai-de-ielts-writing-task-1-ngay-16122023.jpg" alt="Image Description" width="724" height="485">
             </div>
             <p class="word-count">Word Count: <span id="wordCountTask1">${cnt1}</span></p>
             <textarea id="textTask1" rows="10" cols="50" readonly>${answer.task1}</textarea>
@@ -31,7 +35,15 @@
         <div class="lower-left">
             <div class="task">
                 <h2>Writing Task 2</h2>
-                <p>${w.part2}</p>
+                <p>You should spend about 40 minutes on this task.
+
+                    Write about the following topic:
+
+                    People living in the 21st century have a better quality of life than the previous centuries.
+
+                    To what extent do you agree or disagree?
+
+                    Give reasons for your answer and include any relevant examples from your own knowledge or experience.</p>
             </div>
             <p class="word-count">Word Count: <span id="wordCountTask2">${cnt2}</span></p>
             <textarea id="textTask2" rows="10" cols="50" readonly> ${answer.task2}</textarea>

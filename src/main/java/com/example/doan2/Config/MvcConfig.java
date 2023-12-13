@@ -12,4 +12,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/images/**")// vói đường đãn url bắt đầu bằng images/
                 .addResourceLocations("file:/" + FileUtils.FOLDER_MEDIA );// thì nó sẽ vào thư mục FOLDER_MEDIA lấy file
+        registry
+                .addResourceHandler("/audio/**")
+                .addResourceLocations("file:/" + FileUtils.Audio_Media);
     }}

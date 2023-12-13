@@ -67,7 +67,8 @@ public class WritingController {
         int wordCountTemp2 = countWords(answerWritingEntity.get().getTask2());
         model.addAttribute("cnt1",wordCountTemp1);
         model.addAttribute("cnt2",wordCountTemp2);
-        writingEntity=writingService.findWritingById(id);
+        int testId=answerWritingEntity.get().getTest().getId();
+        writingEntity=writingService.findWritingById(testId);
         model.addAttribute("w", writingEntity);
         model.addAttribute("ansId",id);
         Integer userId=userService.findByUserEmail(userRepository);
