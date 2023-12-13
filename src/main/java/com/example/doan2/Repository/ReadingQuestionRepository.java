@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReadingQuestionRepository extends JpaRepository<ReadingQuesEntity,Integer> {
-
+public interface ReadingQuestionRepository extends JpaRepository<ReadingQuesEntity, Integer> {
+    @Query(value = "SELECT correct FROM reading_question WHERE reading_id = :readingId", nativeQuery = true)
+    List<String> findCorrectAnswersByReadingId(@Param("readingId") Integer readingId);
 }
+

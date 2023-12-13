@@ -1,23 +1,35 @@
 package com.example.doan2.Controller.User.Answer;
 
+import com.example.doan2.Dto.AnswerReadingDto;
+import com.example.doan2.Repository.ReadingQuestionRepository;
+import com.example.doan2.Repository.UserRepository;
+import com.example.doan2.Service.AnswerService;
 import com.example.doan2.Service.PassageService;
+import com.example.doan2.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("ielts/reading")
 public class Reading {
     @Autowired
     PassageService passageService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    AnswerService answerService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ReadingQuestionRepository questionRepository;
+    int userId;
     public void findAllPassageInfo(Integer id, Model model) {
         for (int passageNumber = 1; passageNumber <= 3; passageNumber++) {
             List<String> contents = passageService.findContentByPassage(id, passageNumber);
@@ -42,12 +54,55 @@ public class Reading {
             String[][]options= (String[][]) model.getAttribute("options"+passageNumber);
             List<String> contents = (List<String>) model.getAttribute("contents" + passageNumber);
             List<String> types = (List<String>) model.getAttribute("types" + passageNumber);
-            String output = passageService.generateOutputWithInputs(contents, types,nums,options);
+            String output = passageService.generateOutputWithInputs(contents, types,nums,options,passageNumber);
             model.addAttribute("output" + passageNumber, output);
         }
+        model.addAttribute("userId",userId);
+        model.addAttribute("examId",id);
+        userId=userService.findByUserEmail(userRepository);
 
         return "/jsp/user/answer/reading.jsp";
     }
+
+@PostMapping(value = "submit", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+public ResponseEntity<String> submitReadingAnswers(@RequestParam Map<String, String> formData,AnswerReadingDto answerReadingDto,
+                                                   @RequestParam("test_id") Integer examID,
+                                                   @RequestParam(value = "userId",required = false)Integer userId) {
+    List<String> selectedAnswers = new ArrayList<>();
+    System.out.println(formData.size());
+    for (Map.Entry<String, String> entry : formData.entrySet()) {
+        String key = entry.getKey();
+        if (key.startsWith("input_") && !key.endsWith("_placeholder")) {
+            String values = entry.getValue();
+            selectedAnswers.addAll(Collections.singleton(values));
+        }else if(key.endsWith("_placeholder")){
+            String originalString = entry.getKey();
+            String cutString="";
+            int placeholderIndex = originalString.lastIndexOf("_placeholder");
+                cutString = originalString.substring(0, placeholderIndex);
+                if(!formData.containsKey(cutString)){
+                    selectedAnswers.add(" ");
+                }
+
+        }
+    }
+answerReadingDto.setSelectedAns(selectedAnswers);
+//    System.out.println(userId);
+//    System.out.println(examID);
+    answerReadingDto.setUser_id(userId);
+    answerReadingDto.setTest_id(examID);
+    answerReadingDto.setScore(answerService.calculateScore(answerReadingDto,examID,questionRepository));
+    answerService.save(answerReadingDto);
+    System.out.println(answerReadingDto.getScore());
+// truyền userID từ jsp nữa
+    for(int i=0;i<selectedAnswers.size();i++){
+        System.out.println("Cau hoi"+(i+1)+selectedAnswers.get(i));
+    }
+
+    return ResponseEntity.ok("Answers submitted successfully");
+}
+
+
 
 
 

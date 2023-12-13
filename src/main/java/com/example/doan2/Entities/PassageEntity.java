@@ -22,6 +22,8 @@ public class PassageEntity {
     @Column(name="passage3")
     private String passage3;
     @OneToMany(mappedBy = "passageEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AnswerReadingEntity> answerReadingEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "passageEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReadingQuesEntity> readingQuesEntities = new ArrayList<>();
     public Integer getId() {
         return id;

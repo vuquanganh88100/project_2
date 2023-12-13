@@ -1,4 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page pageEncoding="UTF-8" %>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery -->
+
 <style>
     /* General styles */
     body {
@@ -71,6 +74,7 @@
 
 
 </style>
+<form action="/ielts/reading/submit" method="post" modelAttribute="answer">
 <%
     for (int index = 1; index <= 3; index++) {
         out.print("<h2>Passage:" + index + "</h2>");
@@ -80,3 +84,65 @@
         out.println("<br>");
     }
 %>
+    <input type="hidden" name="test_id" value="${examId}">
+    <input type="hidden" name="userId" value="${userId}">
+
+    <button type="submit">Submit Answers</button>
+</form>
+<script>
+    var selectedAnswers = [];
+    function submitAnswers() {
+        var formData = {};
+
+        $("input[type='radio']:checked, input[type='text']").each(function() {
+            var questionIndex = $(this).data('questionindex');
+            var inputName = $(this).attr('name');
+            var inputValue = $(this).val();
+
+            if (!formData.hasOwnProperty(inputName)) {
+                formData[inputName] = {};
+            }
+
+            formData[inputName][questionIndex] = inputValue;
+        });
+
+        $.ajax({
+            url: '/ielts/reading/submit',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                alert('Answers submitted successfully');
+            },
+            error: function() {
+                alert('Error submitting answers');
+            }
+        });
+    }
+
+
+
+
+    // Update function to capture selected answers
+    $(document).ready(function() {
+        $("input[type='radio']").change(function() {
+            var questionIndex = $(this).data('questionindex');
+            var selectedOption = $(this).val();
+            selectedAnswers[questionIndex] = selectedOption;
+
+            console.log("Question Index: " + questionIndex);
+            console.log("Selected Value: " + selectedOption);
+        });
+
+        $("input[type='text']").change(function() {
+            var questionIndex = $(this).data('questionindex');
+            var enteredText = $(this).val();
+            selectedAnswers[questionIndex] = enteredText;
+            console.log("Question Index: " + questionIndex);
+            console.log("Selected Value: " + enteredText);
+        });
+    });
+
+
+
+</script>

@@ -88,8 +88,16 @@ public class PassageService {
 
         return passage;
     }
-
-    public String generateOutputWithInputs(List<String> content, List<String> type,List<Integer>nums,String [][]option) {
+    public List<String> findCorrect(Integer id, int passageNumber) {
+        List<String> correct = new ArrayList<>();
+        List<Object[]> resultList = passageRepository.findContentAndPassageByReadingIdAndPassage(id, passageNumber);
+        for (Object[] result : resultList) {
+            String num = (String) result[9];
+            correct.add(num);
+        }
+        return correct;
+    }
+    public String generateOutputWithInputs(List<String> content, List<String> type,List<Integer>nums,String [][]option,int passageNumber) {
         StringBuilder output = new StringBuilder();
 
         int i = 0;
@@ -104,13 +112,14 @@ public class PassageService {
                 }
                 output.append("Question: ").append(nums.get(k)).append(" "+content.get(k)).append("<br>");
                 if (!String.valueOf(option[k][0]).equals("null")) {
-                    output.append("<label><input type=\"radio\" name=\"input_" + k + "\" value=\"A\" title=\"" + option[k][0] + "\" />Option A: " + option[k][0] + "</label><br>");
-                    output.append("<label><input type=\"radio\" name=\"input_" + k + "\" value=\"B\" title=\"" + option[k][1] + "\" />Option B: " + option[k][1] + "</label><br>");
-                    output.append("<label><input type=\"radio\" name=\"input_" + k + "\" value=\"C\" title=\"" + option[k][2] + "\" />Option C: " + option[k][2] + "</label><br>");
-                    output.append("<label><input type=\"radio\" name=\"input_" + k + "\" value=\"D\" title=\"" + option[k][3] + "\" />Option D: " + option[k][3] + "</label><br>");
+                    output.append("<input type=\"hidden\" name=\"input_" + passageNumber + "_" + k + "_placeholder\" />"); // Add hidden field as a placeholder
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"A\"  title=\"" + option[k][0] + "\" data-questionIndex=\"" + nums.get(k) + "\" />Option A: " + option[k][0] + "</label><br>");
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"B\" title=\"" + option[k][1] + "\" data-questionIndex=\"" + nums.get(k) + "\" />Option B: " + option[k][1] + "</label><br>");
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"C\" title=\"" + option[k][2] + "\" data-questionIndex=\"" + nums.get(k) + "\" />Option C: " + option[k][2] + "</label><br>");
+                    output.append("<input type=\"radio\" name=\"input_" + passageNumber + "_" + k + "\" value=\"D\" title=\"" + option[k][3] + "\" data-questionIndex=\"" + nums.get(k) + "\" />Option D: " + option[k][3] + "</label><br>");
                 }
                 else {
-                    output.append("<input type=\"text\" name=\"input_").append(k).append("\" /><br>"); // Add input box for each entry
+                    output.append("<input type=\"text\" name=\"input_" + passageNumber + "_" + k  + "\" data-questionIndex=\"" + nums.get(k) + "\" /><br>");
                 }
             }
 

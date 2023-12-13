@@ -26,4 +26,6 @@ public class UserEntity {
     private String userPassword;
     @OneToOne(mappedBy = "userEntity")
     private  ConfirmTokenEntity confirmTokenEntity;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AnswerReadingEntity> answerReadingEntities = new ArrayList<>();
 }

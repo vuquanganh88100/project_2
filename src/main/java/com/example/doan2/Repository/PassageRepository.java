@@ -14,7 +14,7 @@ public interface PassageRepository extends JpaRepository<PassageEntity,Integer> 
             "   WHEN 2 THEN rp.passage2 " +
             "   WHEN 3 THEN rp.passage3 " +
             "   ELSE NULL END AS passage, " +
-            "rq.id, rq.type,rq.number_question,rq.A,rq.B,rq.C,rq.D " +
+            "rq.id, rq.type,rq.number_question,rq.A,rq.B,rq.C,rq.D,rq.correct " +
             "FROM ReadingQuesEntity rq " +
             "JOIN rq.passageEntity rp " +
             "WHERE rp.id = :readingId AND rq.passage = :passage")
